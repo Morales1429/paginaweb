@@ -1,0 +1,45 @@
+@page "/products"
+@using paginaweb.Data
+
+<h1><b>PRODUCTOS</b></h1>
+<h3>Porfavor seleccione un <b>producto</b> para ver el detalle de los productos</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>Codigo</td>
+            <td>Nombre</td>
+            <td>Precio</td>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var inm in items)
+        {
+            <tr>
+                <td>@inm.id</td>
+                <td>@inm.Code</td>
+                <td>@inm.Name</td>
+                <td>@inm.Price</td>
+                <td>
+                    <a class="btn btn-info" href="/products/@inm.id/details">
+                            Ver
+                    </a>
+                </td>
+            </tr> 
+        }
+        
+    </tbody>
+</table>
+
+@code{
+
+    public List<Product> items = new();
+    protected override void OnInitialized()
+    {
+       InMemoryProducts memoryBD = new InMemoryProducts();
+        items = memoryBD.getProducts();
+    }
+
+}

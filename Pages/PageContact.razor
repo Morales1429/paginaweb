@@ -1,0 +1,120 @@
+@page "/contact"
+@using paginaweb.Data
+
+<h1><b>PÁGINA DE CONTACTO</b></h1>
+<h2>FORMULARIO, Porfavor diligencie el formulario, para realizar el pedido</h2>
+<hr>
+
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Nombres</label>
+  <input type="text" class="form-control" @bind="nombre" placeholder="Nombres...">
+</div>
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Correo Electronico</label>
+  <input type="email" class="form-control" @bind="correo" placeholder="Correo...">
+</div>
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Numero Telefonico</label>
+  <input type="text" class="form-control" @bind="numero" placeholder="Numero...">
+</div>
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Mensaje</label>
+  <textarea class="form-control" rows="5" @bind="mensaje"  placeholder="Mensaje..."></textarea>
+</div>
+<button class="btn btn-success" @onclick="() => AgregarItem()"  >
+  Enviar
+
+</button>
+<br>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>Formularios Emitidos</td>
+            
+        </tr>
+    </thead>
+    
+    <tbody>
+      @foreach (var item in items)
+      {
+        
+      
+        <tr>
+            <td>
+              Hola soy @item.Nombre, quiero contactarme con ustedes por los siguiente,
+              @item.Mensaje .
+
+              Pueden contactarse conmigo en:
+              -Correo: @item.Correo
+              -Telefono: @item.Numero
+            </td>
+                    
+            <td>
+              <button class="btn btn-danger" @onclick ="() =>EliminarItem(item)">
+                   Eliminar
+              </button>
+                        
+                      
+            </td>
+        </tr>
+        
+             
+      
+      }      
+    </tbody>
+</table>
+
+@code{
+
+  private string? nombre;
+  private string? correo;
+  private string? mensaje;
+  private string? numero;
+  public List<Usuario> items = new();
+
+  private void Imprimir (){
+    Console.WriteLine("Ready");
+    Console.WriteLine(nombre);
+  }
+
+    private void AgregarItem()
+    {
+        if(
+            !string.IsNullOrWhiteSpace(nombre) &&
+            !string.IsNullOrWhiteSpace(mensaje) &&
+            !string.IsNullOrWhiteSpace(correo)&&
+            !string.IsNullOrWhiteSpace(numero)
+        ) {
+            items.Add(
+                new Usuario {
+                    Nombre = nombre,
+                    Mensaje = mensaje,
+                    Correo = correo,
+                    Numero = numero
+                }
+            );
+            nombre = string.Empty;
+            correo = string.Empty;
+            mensaje = string.Empty;
+            numero = string.Empty;
+        }
+    }
+
+    private void EliminarItem(Usuario item)
+    {
+        Console.WriteLine("Ingreso");
+        items.Remove(item);
+    }
+
+   protected override void OnInitialized()
+    {
+        UsuarioData usuarioBD = new UsuarioData();
+        items = usuarioBD.GetUsuarios();
+    }
+
+
+
+}
+
+

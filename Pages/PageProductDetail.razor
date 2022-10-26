@@ -1,0 +1,29 @@
+@page "/products/{id:int}/details"
+@using paginaweb.Data;
+
+<h1>Detalles del producto</h1>
+<hr>
+<h3>ID: @producto.id  </h3>
+<h3>Codigo: @producto.Code  </h3>
+<h3>Nombre: @producto.Name  </h3>
+<h3>Precio: @producto.Price </h3>
+
+@code{
+ 
+    private Product producto;
+
+    [Parameter]
+    public int id {get; set;}
+
+    
+    protected override void OnInitialized()
+    {
+        InMemoryProducts memoryBD = new InMemoryProducts();
+        List<Product> items = memoryBD.getProducts();
+
+        producto = items[this.id-1];
+
+        
+    }
+
+}
